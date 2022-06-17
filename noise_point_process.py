@@ -19,5 +19,6 @@ if __name__ =="__main__":
     #噪点数据处理
     noise_event_event = train_event_event.loc[train_event_event['cluster']==-1]
     noise_process = Cluster(noise_event_event, event_cluster)
+    noise_process.start=len(event_cluster)
     event_cluster, noise_event_event = noise_process.run()
     train_event_event.loc[train_event_event['cluster'] == -1]['cluster'] = noise_event_event['cluster'].values.tolist()
