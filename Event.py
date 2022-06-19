@@ -88,7 +88,7 @@ class Event(object):
                         temp += vec_list[j][i] * wei_list[j]  # 利用词向量及词权重，加权平均生成代表向量
                     new.append(temp / (len(vec_list)))
             else:
-                new = [0 for i in range(768)]
+                new = [1 for i in range(768)]
             output.append(new)
         return output
 
