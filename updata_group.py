@@ -41,4 +41,5 @@ if __name__ =="__main__":
     train_event_event, self_dict = train_events.run()  # 获取训练数据的关键词列表和代表向量
 
     events_clusters = Cluster(train_event_event, event_cluster)
+    events_clusters.start = 0  # event_cluster表从头开始记录
     event_cluster, train_event_event = events_clusters.run()  # 训练数据预聚类

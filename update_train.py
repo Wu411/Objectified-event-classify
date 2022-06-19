@@ -18,4 +18,5 @@ if __name__ =="__main__":
 
     #更新模型
     events_clusters = Cluster(train_event_event, event_cluster)
+    events_clusters.start = 0  # event_cluster表从头开始记录
     event_cluster, train_event_event = events_clusters.run()  # 训练数据预聚类

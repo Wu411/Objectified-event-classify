@@ -55,11 +55,8 @@ class New_Event():
             weight = []
             result = []
             for vector in vector_list:  # 遍历其中每个关键词的词向量
-                if not vector.any() == 0:
-                    wei = self.cosSim(np.array(query), np.array(vector))  # 以与query的相似度作为向量权重
-                    weight.append(wei)
-                else:
-                    weight.append(0)
+                wei = self.cosSim(np.array(query), np.array(vector))  # 以与query的相似度作为向量权重
+                weight.append(wei)
             for m in range(768):
                 temp = 0
                 for n in range(len(vector_list)):
