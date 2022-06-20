@@ -17,7 +17,7 @@ class New_Event():
         self.feature = new_event_event['word_embedding'].values.tolist()  # 测试数据代表向量
         self.group_result = []  # 测试数据分类结果
         self.cluster_result = []  # 测试数据聚类结果
-        self.sim_result = []  # 测试数据相似度结果
+        #self.sim_result = []  # 测试数据相似度结果
         self.noise_num = noise_num  # 现有噪点数据量
 
     def first_classify(self):
@@ -39,6 +39,7 @@ class New_Event():
                 self.cluster_result.append(cluster_tmp)  # 记录新数据的所有聚类结果
             else:
                 self.group_result.append([])  # 若未找到相同数据，分类结果为空
+                #self.sim_result.append([])  # 若未找到相同数据，相似度结果为空
                 self.cluster_result.append([])  # 若未找到相同数据，聚类结果为空
         return
 
@@ -94,14 +95,14 @@ class New_Event():
                 temp1 = [x[0] for x in tmp1[0:5]]
                 temp2 = [x[1] for x in tmp[0:5]]
                 self.group_result[index] = dict(zip(temp,temp2))
-                self.sim_result[index]=temp2
+                #self.sim_result[index] = temp2
                 self.cluster_result[index]=temp1
             else:
                 # 未找到所属聚类，按噪点数据分类处理
                 self.noise_num += 1
                 group_num, sim = self.noise_process(np.array(new))  # 对噪点数据进行分类
                 self.group_result[index] = dict(zip(group_num,sim))  # 记录噪点数据的分类结果
-                self.sim_result[index] = sim
+                #self.sim_result[index] = sim
                 self.cluster_result[index].append(-1)  # 记录噪点数据的聚类结果（-1）
         self.test_data['group_classify'] = self.group_result
         self.test_data['cluster'] = self.cluster_result  # 记录所有新数据的分类和聚类结果
@@ -131,7 +132,7 @@ class New_Event():
 
     #噪点数据相似度衡量及分类
     def noise_process(self, noise_point):
-        group_vec=self.attention(noise_point)  # 使用Attention机制，根据噪点数据获取所有事件类别的代表向量
-        group_threshold=0.8  # 设定分类相似度阈值
+        group_vec = self.attention(noise_point)  # 使用Attention机制，根据噪点数据获取所有事件类别的代表向量
+        group_threshold = 0.8  # 设定分类相似度阈值
         groups_result, sim_result = self.cul_simlarity(noise_point, group_vec, group_threshold)  # 对噪点数据分类
         return groups_result, sim_result
