@@ -31,7 +31,7 @@ event_cluster = pd.read_excel(path5, sheet_name="Sheet1")
 
 if __name__ =="__main__":
     # 训练模型
-    event_keyword = pd.DataFrame(columns=['id', 'word_embedding', 'keyword', 'weight'])
+    event_keyword = pd.DataFrame(columns=['id', 'word_embedding', 'keyword', 'weight'])  # 建立空的关键词词典dataframe
     Group=Group(event_group, event_keyword, self_dict)
     event_group, event_keyword, self_dict = Group.run()  # 建立关键词词典,获取事件类别关键词向量
 
