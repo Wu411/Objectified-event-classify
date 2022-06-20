@@ -92,7 +92,7 @@ class Group(object):
         self.event_keyword['id'] = [i for i in range(len(words))]
         self.event_keyword['keyword'] = words
         self.event_keyword['weight'] = weights
-        self.event_keyword['word_embedding'] = vectors
+        self.event_keyword['word_embedding'] = vectors.tolist()
 
     def get_group_vectors(self):
         for group, seg_list in self.group_keyword.items():
