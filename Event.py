@@ -48,7 +48,7 @@ class Event(object):
         tmp_txt = re.sub(r'\.?(/[^\s\u4e00-\u9fa5]+)+', 'path', tmp_txt)
         tmp_txt = re.sub(r'[a-zA-Z0-9_][-a-zA-Z0-9_]{0,62}(\.[a-zA-Z0-9_][-a-zA-Z0-9_]{0,62})+\.?', 'DOMAIN', tmp_txt)
         tmp_txt = re.sub(r'\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*', 'Email', tmp_txt)
-        self.update_selfdict(tmp_txt, self_dict)  # 动态更新自定义词典，加入以下划线和连字符连接的词组
+        #self.update_selfdict(tmp_txt, self_dict)  # 动态更新自定义词典，加入以下划线和连字符连接的词组
         tmp_txt = re.sub(r'[A-Za-z0-9]{20,}', 'code', tmp_txt)
         tmp_txt = re.sub(r'[^\u4e00-\u9fa5A-Za-z0-9]{2,}', 'symbol', tmp_txt)
         return tmp_txt
@@ -63,8 +63,11 @@ class Event(object):
 
     #获取某条事件关键词
     def getkeyword(self, txt):
+        english_words = re.findall('[a-zA-Z0-9_-]+',txt)  # 识别英文单词
+        txt = re.sub('[a-zA-Z0-9_-]+',' ',txt)
         jieba.load_userdict(self.self_dict)  # 加载自定义词典
         seg_list = jieba.lcut(txt)  # 对预处理后的summary分词
+        seg_list.extend(english_words)
         words = []
         num = 0
         # 选出前十个关键词

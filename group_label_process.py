@@ -19,12 +19,13 @@ class Group(object):
 
     # 预处理事件类别的文本描述
     def process_data(self):
-        self.update_selfdict(self.group_name.values(), self.self_dict)
+        #self.update_selfdict(self.group_name.values(), self.self_dict)
         jieba.load_userdict(self.self_dict)  # 加载自定义词典
         num = re.compile(r'((-?\d+)(\.\d+)?)')
         character = re.compile(r'\W+')
         for g, w in self.group_name.items():  # 遍历事件类别的文本描述数据
-            l = []
+            l = re.findall('[a-zA-Z0-9_-]+', w)  # 识别英文单词
+            w = re.sub('[a-zA-Z0-9_-]+', ' ', w)
             for j in jieba.lcut(w):  # 事件类别的文本描述分词
                 if not character.match(j) and not num.match(j):  # 去除数字、符号
                     l.append(j.casefold())
@@ -84,6 +85,7 @@ class Group(object):
 
         bc = BertClient()  # 加载Bert预训练模型
         vectors = bc.encode(words)  # 获取所有词的词向量
+        vectors = vectors.tolist()
         for i,j,z in zip(weights, vectors, words):
             self.keyword_weight[z] = i  # 记录所有词的词权重
             self.keyword_vector[z] = j  # 记录所有词的词向量
@@ -92,7 +94,7 @@ class Group(object):
         self.event_keyword['id'] = [i for i in range(len(words))]
         self.event_keyword['keyword'] = words
         self.event_keyword['weight'] = weights
-        self.event_keyword['word_embedding'] = vectors.tolist()
+        self.event_keyword['word_embedding'] = vectors
 
     def get_group_vectors(self):
         for group, seg_list in self.group_keyword.items():
